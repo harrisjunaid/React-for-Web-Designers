@@ -1,9 +1,12 @@
-class PostForm extends React.Component {
-  constructor(props) {
-    super(props);
+(function() {
+  "use strict";
 
-    // Type options are an object; convert to an array and map
-    this.typeOptions = Object.keys(props.messageTypes).map(function(key) {
+  var CONFIG = {
+    apiUrl: "http://localhost/reactjs/status_api"
+  };
+
+  function PostForm(props) {
+    var typeOptions = Object.keys(props.messageTypes).map(function(key) {
       if (props.messageTypes.hasOwnProperty(key)) {
         return (
           <option key={key} value={key}>
@@ -14,53 +17,21 @@ class PostForm extends React.Component {
     });
 
     // so we don't have to type this over and over
-    this.defaultType = this.typeOptions[0].key;
+    var defaultType = typeOptions[0].key;
 
-    this.state = {
-      messageText: "",
-      messageType: this.defaultType
-    };
+    var [messageText, setMessageText] = React.useState("");
+    var [messageType, setMessageType] = React.useState(defaultType);
 
-    this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleTypeChange = this.handleTypeChange.bind(this);
-    this.postStatusUpdate = this.postStatusUpdate.bind(this);
-  }
+    function handleTextChange(evt) {
+      setMessageText(evt.target.value);
+    }
 
-  handleTextChange(evt) {
-    this.setState({
-      messageText: evt.target.value
-    });
-  }
+    function handleTypeChange(evt) {
+      setMessageType(evt.target.value);
+    }
 
-  handleTypeChange(evt) {
-    this.setState({
-      messageType: evt.target.value
-    });
-  }
-
-  postStatusUpdate(evt) {
-    evt.preventDefault();
-
-    var newStatus = {
-      msg: this.state.messageText,
-      type: this.state.messageType,
-      time: date.format(new Date(), "YYYY-MM-DD, HH:mm")
-    };
-
-    axios.post(this.props.apiUrl + "/post.php", newStatus).then(
-      function(response) {
-        console.log(response);
-
-        if (response.data.success) {
-          // Update state
-        }
-      }.bind(this)
-    );
-  }
-
-  render() {
     return (
-      <form onSubmit={this.postStatusUpdate}>
+      <form>
         <h3>Post an Update</h3>
 
         <div className="field-group">
@@ -68,18 +39,15 @@ class PostForm extends React.Component {
           <textarea
             id="txt-message"
             rows="2"
-            onChange={this.handleTextChange}
-            value={this.state.messageText}
+            onChange={handleTextChange}
+            value={messageText}
           />
         </div>
 
         <div className="field-group">
           <label htmlFor="txt-type">Type</label>
-          <select
-            id="txt-type"
-            onChange={this.handleTypeChange}
-            value={this.state.messageType}>
-            {this.typeOptions}
+          <select id="txt-type" onChange={handleTypeChange} value={messageType}>
+            {typeOptions}
           </select>
         </div>
 
@@ -89,65 +57,51 @@ class PostForm extends React.Component {
       </form>
     );
   }
-}
 
-function StatusMessage(props) {
-  var statusDate = date.parse(props.time, "YYYY-MM-DD, HH:mm"),
-    dateFormat = "M/D/Y, h:mm A";
+  function StatusMessage(props) {
+    var statusDate = date.parse(props.time, "YYYY-MM-DD, HH:mm"),
+      dateFormat = "M/D/Y, h:mm A";
 
-  return (
-    <div className="status-message">
-      {props.msg}
-      <span className="name">— {props.type}</span>
-      <span className="time">{date.format(statusDate, dateFormat)}</span>
-    </div>
-  );
-}
-
-class StatusMessageList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      statuses: [],
-      isLoaded: false
-    };
-  }
-
-  componentDidMount() {
-    this.retrieveStatusMessages();
-  }
-
-  retrieveStatusMessages() {
-    axios.get(this.props.apiUrl + "/get.php?delay=5").then(
-      function(response) {
-        this.setState({
-          statuses: response.data,
-          isLoaded: true
-        });
-      }.bind(this)
+    return (
+      <div className="status-message">
+        {props.msg}
+        <span className="name">— {props.type}</span>
+        <span className="time">{date.format(statusDate, dateFormat)}</span>
+      </div>
     );
   }
 
-  displayStatusMessages() {
-    return this.state.statuses.map(
-      function(status) {
+  function StatusMessageList(props) {
+    var [statuses, setStatuses] = React.useState([]);
+    var [loaded, setLoaded] = React.useState(false);
+
+    React.useEffect(function() {
+      retrieveStatusMessages();
+    }, []);
+
+    function retrieveStatusMessages() {
+      axios.get(CONFIG.apiUrl + "/get.php?delay=5").then(function(response) {
+        setStatuses(response.data);
+        setLoaded(true);
+      });
+    }
+
+    function displayStatusMessages() {
+      return statuses.map(function(status) {
         return (
           <li key={status.id}>
             <StatusMessage
               msg={status.msg}
-              type={this.props.messageTypes[status.type]}
+              type={props.messageTypes[status.type]}
               time={status.time}
             />
           </li>
         );
-      }.bind(this)
-    );
-  }
+      });
+    }
 
-  render() {
-    if (this.state.isLoaded) {
-      return <ul id="status-list">{this.displayStatusMessages()}</ul>;
+    if (loaded) {
+      return <ul id="status-list">{displayStatusMessages()}</ul>;
     } else {
       return (
         <div id="status-list" className="loading">
@@ -161,14 +115,9 @@ class StatusMessageList extends React.Component {
       );
     }
   }
-}
 
-class StatusMessageManager extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // just a property, doesn't have to be state
-    this.messageTypes = {
+  function StatusMessageManager(props) {
+    var messageTypes = {
       management: "Management",
       dining: "Dining Services",
       ops: "Operations",
@@ -176,21 +125,18 @@ class StatusMessageManager extends React.Component {
       pool: "Pool"
     };
 
-    this.apiUrl = "http://localhost/reactjs/status_api";
-
-    this.state = {};
-  }
-
-  render() {
     return (
       <React.Fragment>
         <div id="post-status">
-          <PostForm messageTypes={this.messageTypes} apiUrl={this.apiUrl} />
+          <PostForm messageTypes={messageTypes} />
         </div>
-        <StatusMessageList messageTypes={this.messageTypes} apiUrl={this.apiUrl} />
+        <StatusMessageList messageTypes={messageTypes} />
       </React.Fragment>
     );
   }
-}
 
-ReactDOM.render(<StatusMessageManager />, document.getElementById("react-statusmanager"));
+  ReactDOM.render(
+    <StatusMessageManager />,
+    document.getElementById("react-statusmanager")
+  );
+})();

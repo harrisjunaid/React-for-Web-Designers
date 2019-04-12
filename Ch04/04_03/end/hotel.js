@@ -1,9 +1,8 @@
-class PostForm extends React.Component {
-  constructor(props) {
-    super(props);
+(function() {
+  "use strict";
 
-    // Type options are an object; convert to an array and map
-    this.typeOptions = Object.keys(props.messageTypes).map(function(key) {
+  function PostForm(props) {
+    var typeOptions = Object.keys(props.messageTypes).map(function(key) {
       if (props.messageTypes.hasOwnProperty(key)) {
         return (
           <option key={key} value={key}>
@@ -14,10 +13,8 @@ class PostForm extends React.Component {
     });
 
     // so we don't have to type this over and over
-    this.defaultType = this.typeOptions[0].key;
-  }
+    var defaultType = typeOptions[0].key;
 
-  render() {
     return (
       <form>
         <h3>Post an Update</h3>
@@ -29,7 +26,7 @@ class PostForm extends React.Component {
 
         <div className="field-group">
           <label htmlFor="txt-type">Type</label>
-          <select id="txt-type">{this.typeOptions}</select>
+          <select id="txt-type">{typeOptions}</select>
         </div>
 
         <div className="field-group action">
@@ -38,94 +35,75 @@ class PostForm extends React.Component {
       </form>
     );
   }
-}
 
-function StatusMessage(props) {
-  var statusDate = date.parse(props.time, "YYYY-MM-DD, HH:mm"),
-    dateFormat = "M/D/Y, h:mm A";
+  function StatusMessage(props) {
+    var statusDate = date.parse(props.time, "YYYY-MM-DD, HH:mm"),
+      dateFormat = "M/D/Y, h:mm A";
 
-  return (
-    <div className="status-message">
-      {props.msg}
-      <span className="name">— {props.type}</span>
-      <span className="time">{date.format(statusDate, dateFormat)}</span>
-    </div>
-  );
-}
+    return (
+      <div className="status-message">
+        {props.msg}
+        <span className="name">— {props.type}</span>
+        <span className="time">{date.format(statusDate, dateFormat)}</span>
+      </div>
+    );
+  }
 
-class StatusMessageList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.stubStatuses = [
+  function StatusMessageList(props) {
+    var stubStatuses = [
       {
         id: 1,
         msg:
           "The hot tub is currently closed for maintenance.  We expect it to be back up and running within 48 hours.",
         type: "management",
-        time: "2018-03-30, 09:15"
+        time: "2019-04-11, 09:15"
       },
       {
         id: 2,
         msg: "The hot tub maintenance is complete.  Please enjoy a dip!",
         type: "management",
-        time: "2018-03-30, 17:12"
+        time: "2019-04-14, 17:12"
       },
       {
         id: 3,
         msg:
           "The rice cooker is on the fritz, any fried rice dishes will require some extra time to cook.",
         type: "dining",
-        time: "2018-04-02, 15:00"
+        time: "2019-04-18, 15:00"
       }
     ];
 
-    this.state = {
-      statuses: this.stubStatuses
-    };
-  }
+    var [statuses, setStatuses] = React.useState(stubStatuses);
 
-  componentDidMount() {
-    this.retrieveStatusMessages();
-  }
+    React.useEffect(function() {
+      retrieveStatusMessages();
+    }, []);
 
-  retrieveStatusMessages() {
-    axios.get("http://localhost/reactjs/status_api/get.php").then(
-      function(response) {
-        this.setState({
-          statuses: response.data
-        });
-      }.bind(this)
-    );
-  }
+    function retrieveStatusMessages() {
+      axios.get("http://localhost/reactjs/status_api/get.php").then(function(response) {
+        setStatuses(response.data);
+      });
+    }
 
-  displayStatusMessages() {
-    return this.state.statuses.map(
-      function(status) {
+    function displayStatusMessages() {
+      return statuses.map(function(status) {
         return (
           <li key={status.id}>
             <StatusMessage
               msg={status.msg}
-              type={this.props.messageTypes[status.type]}
+              type={props.messageTypes[status.type]}
               time={status.time}
             />
           </li>
         );
-      }.bind(this)
-    );
+      });
+    }
+
+    return <ul id="status-list">{displayStatusMessages()}</ul>;
   }
 
-  render() {
-    return <ul id="status-list">{this.displayStatusMessages()}</ul>;
-  }
-}
-
-class StatusMessageManager extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // just a property, doesn't have to be state
-    this.messageTypes = {
+  function StatusMessageManager(props) {
+    var messageTypes = {
       management: "Management",
       dining: "Dining Services",
       ops: "Operations",
@@ -133,21 +111,20 @@ class StatusMessageManager extends React.Component {
       pool: "Pool"
     };
 
-    this.apiUrl = "http://localhost/reactjs/status_api";
+    var apiUrl = "http://localhost/reactjs/status_api";
 
-    this.state = {};
-  }
-
-  render() {
     return (
       <React.Fragment>
         <div id="post-status">
-          <PostForm messageTypes={this.messageTypes} />
+          <PostForm messageTypes={messageTypes} />
         </div>
-        <StatusMessageList messageTypes={this.messageTypes} />
+        <StatusMessageList messageTypes={messageTypes} />
       </React.Fragment>
     );
   }
-}
 
-ReactDOM.render(<StatusMessageManager />, document.getElementById("react-statusmanager"));
+  ReactDOM.render(
+    <StatusMessageManager />,
+    document.getElementById("react-statusmanager")
+  );
+})();

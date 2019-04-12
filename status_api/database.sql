@@ -40,9 +40,9 @@ CREATE TABLE `statuses` (
 --
 
 INSERT INTO `statuses` (`id`, `msg`, `type`, `time`) VALUES
-(1, 'The hot tub is currently closed for maintenance.  We expect it to be back up and running within 48 hours. #db', 'management', '2018-02-25, 09:15'),
-(2, 'The hot tub maintenance is complete.  Please enjoy a dip! #db', 'management', '2018-02-25, 17:12'),
-(3, 'The rice cooker is on the fritz, any fried rice dishes will require some extra time to cook. #db', 'dining', '2018-02-27, 15:00');
+(1, 'The hot tub is currently closed for maintenance.  We expect it to be back up and running within 48 hours. #db', 'management', '2019-04-11, 09:15'),
+(2, 'The hot tub maintenance is complete.  Please enjoy a dip! #db', 'management', '2019-04-14, 17:12'),
+(3, 'The rice cooker is on the fritz, any fried rice dishes will require some extra time to cook. #db', 'dining', '2019-04-18, 15:00');
 
 --
 -- Indexes for dumped tables

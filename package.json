@@ -16,6 +16,9 @@
     "react-transition-group": "^2.7"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "prettier": "1.10.2"
   }
 }

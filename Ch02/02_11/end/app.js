@@ -60,72 +60,54 @@
   }
 
   function ProductImage(props) {
-    return (
-      <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />
-    );
+    return <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />;
   }
 
-  var ProductCustomizer = createReactClass({
-    getInitialState: function() {
-      var sizes = window.Inventory.allSizes,
-        colors = window.Inventory.allColors;
+  function ProductCustomizer(props) {
+    var [size, setSize] = React.useState(8);
+    var [sizes, setSizes] = React.useState(window.Inventory.allSizes);
 
-      return {
-        color: "red",
-        colors: colors,
-        size: 8,
-        sizes: sizes
-      };
-    },
+    var [color, setColor] = React.useState("red");
+    var [colors, setColors] = React.useState(window.Inventory.allColors);
 
-    handleSizeChange: function(selectedSize) {
+    function handleSizeChange(selectedSize) {
       var availableColors = window.Inventory.bySize[selectedSize];
 
-      this.setState({
-        colors: availableColors,
-        size: selectedSize
-      });
+      setColors(availableColors);
+      setSize(selectedSize);
 
-      if (availableColors.indexOf(this.state.color) === -1) {
-        this.setState({ color: availableColors[0] });
+      if (availableColors.indexOf(color) === -1) {
+        setColor(availableColors[0]);
       }
-    },
+    }
 
-    handleColorChange: function(selectedColor) {
+    function handleColorChange(selectedColor) {
       var availableSizes = window.Inventory.byColor[selectedColor];
 
-      this.setState({
-        sizes: availableSizes,
-        color: selectedColor
-      });
+      setSizes(availableSizes);
+      setColor(selectedColor);
 
-      if (availableSizes.indexOf(this.state.size) === -1) {
-        this.setState({ size: availableSizes[0] });
+      if (availableSizes.indexOf(size) === -1) {
+        setSize(availableSizes[0]);
       }
-    },
-
-    render: function() {
-      return (
-        <div className="customizer">
-          <div className="product-image">
-            <ProductImage color={this.state.color} />
-          </div>
-          <div className="selectors">
-            <SizeSelector
-              size={this.state.size}
-              sizes={this.state.sizes}
-              handleSizeChange={this.handleSizeChange}
-            />
-            <ColorSelector
-              color={this.state.color}
-              colors={this.state.colors}
-              handleColorChange={this.handleColorChange}
-            />
-          </div>
-        </div>
-      );
     }
-  });
+
+    return (
+      <div className="customizer">
+        <div className="product-image">
+          <ProductImage color={color} />
+        </div>
+        <div className="selectors">
+          <SizeSelector size={size} sizes={sizes} handleSizeChange={handleSizeChange} />
+          <ColorSelector
+            color={color}
+            colors={colors}
+            handleColorChange={handleColorChange}
+          />
+        </div>
+      </div>
+    );
+  }
 
   ReactDOM.render(<ProductCustomizer />, document.getElementById("react-root"));
 })();
