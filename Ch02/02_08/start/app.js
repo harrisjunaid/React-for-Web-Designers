@@ -3,7 +3,9 @@
 
   function SizeSelector(props) {
     function sizeOptions() {
-      return props.sizes.map(function(num) {
+      var sizes = window.Inventory.allSizes;
+
+      return sizes.map(function(num) {
         return (
           <option value={num} key={num}>
             {num}
@@ -23,22 +25,19 @@
   }
 
   function ProductImage(props) {
-    return <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />;
+    return (
+      <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />
+    );
   }
 
   function ProductCustomizer(props) {
-    var [size, setSize] = React.useState(8);
-    var [sizes, setSizes] = React.useState(window.Inventory.allSizes);
-
-    var [color, setColor] = React.useState("red");
-
     return (
       <div className="customizer">
         <div className="product-image">
-          <ProductImage color={color} />
+          <ProductImage color="red" />
         </div>
         <div className="selectors">
-          <SizeSelector size={size} sizes={sizes} />
+          <SizeSelector size={8} />
         </div>
       </div>
     );

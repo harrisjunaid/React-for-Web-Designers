@@ -17,7 +17,7 @@
     return (
       <div className="field-group">
         <label htmlFor="size-options">Size:</label>
-        <select defaultValue={props.size} name="sizeOptions" id="size-options">
+        <select name="sizeOptions" id="size-options">
           {sizeOptions()}
         </select>
       </div>
@@ -25,19 +25,17 @@
   }
 
   function ProductImage(props) {
-    return (
-      <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />
-    );
+    return <img src="../../../assets/red.jpg" alt="Product Image" />;
   }
 
   function ProductCustomizer(props) {
     return (
       <div className="customizer">
         <div className="product-image">
-          <ProductImage color="red" />
+          <ProductImage />
         </div>
         <div className="selectors">
-          <SizeSelector size={8} />
+          <SizeSelector />
         </div>
       </div>
     );

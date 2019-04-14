@@ -3,7 +3,7 @@
 
 <head profile="http://gmpg.org/xfn/11">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
 	<title>Shop &#8211; H+ Sport</title>
 	<style>
 		@import url('../../../hplussport.com/wp-content/themes/radcliffe/style3428.css');
@@ -14,9 +14,9 @@
 		body a { color:#c0af00; }	           body a:hover { color:#c0af00; }	           .blog-title a:hover { color:#c0af00; }	           .main-menu > li:hover > a { background:#c0af00; }	           .main-menu ul a:hover { background:#c0af00; }	           a.post-header:hover .post-title { color:#c0af00; }	           .single .post-meta-top a:hover { color:#c0af00; }	           .post-content a { color:#c0af00; }	           .post-content a:hover { color:#c0af00; }	           .post-content fieldset legend { background-color:#c0af00; }	           .post-content input[type="submit"]:hover { background-color:#c0af00; }	           .post-content input[type="reset"]:hover { background-color:#c0af00; }	           .post-content input[type="button"]:hover { background-color:#c0af00; }	           .post-meta a:hover { color:#c0af00; }	           .post-author-inner h3 a:hover { color:#c0af00; }	           .author-links a:hover { background-color:#c0af00; }	           .add-comment-title a { color:#c0af00; }	           .add-comment-title a:hover { color:#c0af00; }	           .by-post-author { background-color:#c0af00; }	           .comment-actions a { color:#c0af00; }	           .comment-actions a:hover { color:#c0af00; }	           .comment-header cite a:hover { color:#c0af00; }	           .comment-header span a:hover { color:#c0af00; }	           .comment-content a { color:#c0af00; }	           .comment-content a:hover { color:#c0af00; }	           .comment-actions a:hover { color:#c0af00; }	           #cancel-comment-reply-link { color:#c0af00; }	           #cancel-comment-reply-link:hover { color:#c0af00; }	           .comment-nav-below a:hover { color:#c0af00; }	           .logged-in-as a { color:#c0af00; }	           .logged-in-as a:hover { color:#c0af00; }	           .content #respond input[type="submit"]:hover { background-color:#c0af00; }	           .archive-container a:hover { color:#c0af00; }	           .archive-nav a:hover { background:#c0af00; }	           #wp-calendar tfoot a:hover { color:#c0af00; }	           .tagcloud a:hover { background:#c0af00; }	           .tagcloud a:hover:before { border-right-color:#c0af00; }	           .credits a:hover { color:#c0af00; }	           .nav-toggle.active { background:#c0af00; }	           .mobile-menu a:hover { background:#c0af00; }
 		body#tinymce.wp-editor a { color:#c0af00; }	           body#tinymce.wp-editor a:hover { color:#c0af00; }
 	</style>
-	<link rel="icon" href="../../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-32x32.png" sizes="32x32">
-	<link rel="icon" href="../../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-192x192.png" sizes="192x192">
-	<link rel="apple-touch-icon-precomposed" href="../../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-180x180.png">
+	<link rel="icon" href="../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-32x32.png" sizes="32x32">
+	<link rel="icon" href="../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-192x192.png" sizes="192x192">
+	<link rel="apple-touch-icon-precomposed" href="../../hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-180x180.png">
 	<meta name="msapplication-TileImage" content="http://hplussport.com/wp-content/uploads/2015/12/cropped-HSport_01-270x270.png">
 	<link rel="stylesheet" href="../../../assets/customizer.css">
 </head>
@@ -112,7 +112,41 @@
 
 					<!-- REACT COMPONENTS GO HERE -->
 					<div id="react-root"></div>
-                </div>
+
+					<div class="customizer">
+						<div class="product-image">
+							<img src="../../../assets/red.jpg" alt="" />
+						</div>
+						<div class="selectors">
+							<div class="field-group">
+								<label for="size-options">Size:</label>
+								<select name="sizeOptions" id="size-options">
+									<option>7</option>
+									<option>7.5</option>
+									<option>8</option>
+									<option>8.5</option>
+									<option>9</option>
+									<option>9.5</option>
+									<option>10</option>
+									<option>10.5</option>
+									<option>11</option>
+									<option>11.5</option>
+									<option>12</option>
+									<option>12.5</option>
+								</select>
+							</div>
+							<div class="field-group">
+								<label for="color-options">Color:</label>
+								<select name="colorOptions" id="color-options">
+									<option>Red</option>
+									<option>Blue</option>
+									<option>Green</option>
+									<option>Brown</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
         
                 </form>
 			</section>
@@ -217,10 +251,22 @@ Polyfills for older browsers
 <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 <script>window.ReactDOM || document.write('<script src="../../../node_modules/react-dom/umd/react-dom.development.js"><\/script>')</script>
 
-<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-<script>window.Babel || document.write('<script src="../../../node_modules/babel-standalone/babel.min.js"><\/script>')</script>
+<script>
+jQuery(function($) {
+  // prototype the change stuff here
+  $('#color-options').on('change', function onColorChange() {
+    var color = $(this).val();
+
+    var $img = $('.product-image').find('img'),
+		oldFile = $img.attr('src');
+
+    $img.attr('src', oldFile.replace(/\/\w+.jpg/, '/'+   color.toLowerCase() +'.jpg'));
+  });
+});
+</script>
 
 <script src="../../../assets/ch02-inventory.js"></script>
-<script src="app.js" type="text/babel"></script>
+
+<!-- <script src="app.js"></script> -->
 </body>
 </html>

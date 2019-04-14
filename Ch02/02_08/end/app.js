@@ -22,27 +22,6 @@
     );
   }
 
-  function ColorSelector(props) {
-    function colorOptions() {
-      return props.colors.map(function(name) {
-        return (
-          <option value={name} key={name}>
-            {name}
-          </option>
-        );
-      });
-    }
-
-    return (
-      <div className="field-group">
-        <label htmlFor="color-options">Color:</label>
-        <select defaultValue={props.color} name="colorOptions" id="color-options">
-          {colorOptions()}
-        </select>
-      </div>
-    );
-  }
-
   function ProductImage(props) {
     return <img src={`../../../assets/${props.color}.jpg`} alt="Product Image" />;
   }
@@ -52,7 +31,6 @@
     var [sizes, setSizes] = React.useState(window.Inventory.allSizes);
 
     var [color, setColor] = React.useState("red");
-    var [colors, setColors] = React.useState(window.Inventory.allColors);
 
     return (
       <div className="customizer">
@@ -61,7 +39,6 @@
         </div>
         <div className="selectors">
           <SizeSelector size={size} sizes={sizes} />
-          <ColorSelector color={color} colors={colors} />
         </div>
       </div>
     );
