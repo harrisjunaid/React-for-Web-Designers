@@ -33,11 +33,11 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         messageType = _React$useState4[0],
         setMessageType = _React$useState4[1];
 
-    function handleTextChange(evt) {
+    function onTextChange(evt) {
       setMessageText(evt.target.value);
     }
 
-    function handleTypeChange(evt) {
+    function onTypeChange(evt) {
       setMessageType(evt.target.value);
     }
 
@@ -78,7 +78,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         React.createElement("textarea", {
           id: "txt-message",
           rows: "2",
-          onChange: handleTextChange,
+          onChange: onTextChange,
           value: messageText
         })
       ),
@@ -92,7 +92,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
         ),
         React.createElement(
           "select",
-          { id: "txt-type", onChange: handleTypeChange, value: messageType },
+          { id: "txt-type", onChange: onTypeChange, value: messageType },
           typeOptions
         )
       ),

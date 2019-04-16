@@ -22,11 +22,11 @@
     var [messageText, setMessageText] = React.useState("");
     var [messageType, setMessageType] = React.useState(defaultType);
 
-    function handleTextChange(evt) {
+    function onTextChange(evt) {
       setMessageText(evt.target.value);
     }
 
-    function handleTypeChange(evt) {
+    function onTypeChange(evt) {
       setMessageType(evt.target.value);
     }
 
@@ -39,14 +39,14 @@
           <textarea
             id="txt-message"
             rows="2"
-            onChange={handleTextChange}
+            onChange={onTextChange}
             value={messageText}
           />
         </div>
 
         <div className="field-group">
           <label htmlFor="txt-type">Type</label>
-          <select id="txt-type" onChange={handleTypeChange} value={messageType}>
+          <select id="txt-type" onChange={onTypeChange} value={messageType}>
             {typeOptions}
           </select>
         </div>

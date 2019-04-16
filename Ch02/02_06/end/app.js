@@ -8,7 +8,7 @@
       return sizes.map(function(num) {
         return (
           <option value={num} key={num}>
-            Size: {num}
+            {num}
           </option>
         );
       });
