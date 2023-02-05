@@ -67,5 +67,5 @@
     );
   }
 
-  ReactDOM.render(<ProductCustomizer />, document.getElementById("react-root"));
+  ReactDOM.render(<ProductCustomizer />, document.querySelector("#react-root"));
 })();
